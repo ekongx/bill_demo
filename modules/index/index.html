@@ -1,0 +1,199 @@
+<!-- layout -->
+        <div class="layout">
+
+            <!-- sidebar -->
+            <div class="sidebar">
+                <div class="main-navigation">
+                    <ul>
+                        <li class="active">
+                            <a href="index.html">
+                                <i class="fa fa-coffee"></i>
+                                <span>新增订单</span>
+                            </a>
+                        </li>                       
+                    </ul>
+                </div>
+
+                <div class="sidebar-footer">
+                    <div class="footer-toolbar pull-left">
+                        <a href="javascript:;" class="pull-left help" data-toggle="tooltip" data-placement="right" title="@好买手技术部">
+                            <i class="fa fa-question-circle"></i>
+                        </a>
+                        <a href="javascript:;" class="toggle-sidebar pull-right hidden-xs">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+                    </div>
+                </div>                  
+            </div>
+            <!-- sidebar end -->
+
+            <!-- main-content -->
+            <div class="main-content">
+                <div class="content-wrap">
+
+                    <div class="row mg-b">
+                        <div class="col-xs-12">
+                            <h4 class="no-margin">新增订单</h4>
+                            <small></small>
+                        </div>
+                    </div>
+
+                    <form id="billsDetail" method="post" class="form-horizontal" action="/index.php/Webadmin/billApi/bill_api_add">
+                    <input type="hidden" name="admin_name" value="海莱客服{$clientInfo.kfcode}" readonly="readonly">
+                    <input type="hidden" name="billsource" value="51" readonly="readonly"> <!-- 订单来源 -->
+                    <input type="hidden" name="client_id" value="2" readonly="readonly"> <!-- 操作用户ID -->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <section class="panel">
+                                <header class="panel-heading">
+                                用户信息
+                                <label class="btn btn-white btn-sm fr" data-toggle="modal" data-target="#historyBill">
+                                    <i class="fa fa-history mg-r-xs"></i>历史订单查询
+                                </label>
+                                </header>
+                                <div class="panel-body user-info">
+                                    <div class="row">                                        
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">姓名</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" value="{$clientInfo.recv_name}" name="recv_name">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">电话号码</label>
+                                                <div class="col-sm-8">
+                                                    <input type="tel" class="form-control" value="{$clientInfo.recv_phone}" name="recv_phone">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">会员等级</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" value="普通会员" name="grade">
+                                                </div>
+                                            </div> 
+                                        </div> 
+                                        <div class="col-sm-12">
+                                            <div class="form-group">                                            
+                                                <label class="col-sm-1 control-label">收货地址</label>
+                                                <div class="col-sm-1">
+                                                    <select class="area_select form-control" id="province" name="recv_province" onchange="billApi.area_reload('city')">
+                                                    <option value="">请选择</option>
+                                                    </select>
+                                                    <input type="hidden" name="recv_province_default" id="recv_province_default" value="{$clientInfo.province}" >
+                                                </div>
+                                                <div class="col-sm-1">
+                                                    <select class="area_select form-control" id="city" name="recv_city" onchange="billApi.area_reload('district')" >
+                                                    <option value="">请选择</option>
+                                                    </select>
+                                                    <input type="hidden" name="recv_city_default" id="recv_city_default" value="{$clientInfo.city}" >
+                                                </div>
+                                                <div class="col-sm-1">
+                                                    <select class="area_select form-control" id="district" name="recv_district" >
+                                                    <option value="">请选择</option>
+                                                    </select>
+                                                    <input type="hidden" name="recv_district_default" id="recv_district_default" value="{$clientInfo.district}" >
+                                                </div>
+                                                <div class="col-sm-5">
+                                                    <input type="text" class="form-control" value="{$clientInfo.address}" name="recv_address">
+                                                </div>
+                                            </div> 
+                                        </div>                                      
+
+                                    </div>                                             
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <section class="panel">
+                                <header class="panel-heading">商品信息
+                                    <label class="btn btn-white btn-sm fr" onclick="billApi.add();">
+                                        <i class="fa fa-plus mg-r-xs"></i>新增
+                                    </label>
+                                </header>
+                                <div class="panel-body">                                     
+                                     <div class="form-horizontal bordered-group" id="goods"></div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>   
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <section class="panel">
+                                <header class="panel-heading">订单信息
+                                    <button type="button" class="btn btn-danger fr btn-sm" onclick="billApi.billFeetotal()"><i class="fa fa-edit"></i> 点击计算商品总价</button>
+                                </header>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                 <label class="col-sm-4 control-label">商品总价</label>
+                                                 <div class="col-sm-8">
+                                                      <input type="text" class="form-control"  name="feetotal" id="feetotal" readonly> 
+                                                 </div>             
+                                            </div> 
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                 <label class="col-sm-4 control-label">订单邮费</label>
+                                                 <div class="col-sm-8">
+                                                     <input type="text" class="form-control" value ="0" id="feepostage" name="feepostage">
+                                                 </div>             
+                                            </div> 
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                 <label class="col-sm-4 control-label">实付金额</label>
+                                                 <div class="col-sm-8">
+                                                      <input type="text" class="form-control" name="feepayment" id="feepayment"> 
+                                                 </div>             
+                                            </div> 
+                                        </div>    
+                                        <div class="col-sm-12">
+                                            <div class="form-group">                                            
+                                                <label class="col-sm-1 control-label">订单优惠</label>
+                                                <div class="col-sm-4">
+                                                    <input type="text" class="form-control" id="promotion" name="promotion" readonly>
+                                                </div>                                                                      
+                                            </div>  
+                                        </div>                                      
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label class="col-sm-1 control-label">卖家备注</label>
+                                                <div class="col-sm-4">
+                                                   <textarea class="form-control" name="content" rows="4"></textarea>    
+                                                </div>                                                                       
+                                            </div>    
+                                        </div>  
+                                    </div>               
+                                </div>
+                            </section>
+                        </div>
+                    </div>  
+
+                    <div class="row">
+                        <div class="col-lg-6 text-left">
+                            <button type="button" class="btn btn-default" id="resetBtn"><i class="fa fa-times"></i> 清空订单</button>
+                        </div>
+                        <div class="col-lg-6 text-right">
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#preview" onclick="billApi.preview(this.form)"><i class="fa fa-search"></i> 预览订单</button>
+                            <button type="button" class="btn btn-danger" onclick="billApi.submit()"><i class="fa fa-check"></i> 提交订单</button>
+                        </div>
+                    </div>
+                    </form>
+                       
+
+                </div>
+            </div>
+            <!-- main-content -->
+
+        </div>
+        <!-- layout end -->
