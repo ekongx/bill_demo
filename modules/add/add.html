@@ -1,5 +1,5 @@
 <!-- layout -->
-        <div class="layout">
+        <div class="layout" ng-init="init()">
 
             <!-- sidebar -->
             <div class="sidebar">
@@ -57,7 +57,7 @@
                                             <div class="form-group">
                                                 <label class="col-sm-4 control-label">姓名</label>
                                                 <div class="col-sm-8">
-                                                    <input type="text" class="form-control" value="{$clientInfo.recv_name}" name="recv_name">
+                                                    <input type="text" class="form-control" value="{{ clientInfo.recv_name }}" name="recv_name">
                                                 </div>
                                             </div>
                                         </div>
@@ -65,7 +65,7 @@
                                             <div class="form-group">
                                                 <label class="col-sm-4 control-label">电话号码</label>
                                                 <div class="col-sm-8">
-                                                    <input type="tel" class="form-control" value="{$clientInfo.recv_phone}" name="recv_phone">
+                                                    <input type="tel" class="form-control" value="{{ clientInfo.recv_phone }}" name="recv_phone">
                                                 </div>
                                             </div>
                                         </div>
@@ -81,25 +81,22 @@
                                             <div class="form-group">                                            
                                                 <label class="col-sm-1 control-label">收货地址</label>
                                                 <div class="col-sm-1">
-                                                    <select class="area_select form-control" id="province" name="recv_province" onchange="billApi.area_reload('city')">
+                                                    <select class="area_select form-control" ng-model="areaReload.province" ng-options="m.name for m in provinceModel"> 
                                                     <option value="">请选择</option>
-                                                    </select>
-                                                    <input type="hidden" name="recv_province_default" id="recv_province_default" value="{$clientInfo.province}" >
+                                                    </select>       
                                                 </div>
                                                 <div class="col-sm-1">
-                                                    <select class="area_select form-control" id="city" name="recv_city" onchange="billApi.area_reload('district')" >
+                                                    <select class="area_select form-control">
                                                     <option value="">请选择</option>
                                                     </select>
-                                                    <input type="hidden" name="recv_city_default" id="recv_city_default" value="{$clientInfo.city}" >
                                                 </div>
                                                 <div class="col-sm-1">
-                                                    <select class="area_select form-control" id="district" name="recv_district" >
+                                                    <select class="area_select form-control">
                                                     <option value="">请选择</option>
                                                     </select>
-                                                    <input type="hidden" name="recv_district_default" id="recv_district_default" value="{$clientInfo.district}" >
                                                 </div>
                                                 <div class="col-sm-5">
-                                                    <input type="text" class="form-control" value="{$clientInfo.address}" name="recv_address">
+                                                    <input type="text" class="form-control" value="{{ clientInfo.address }}" name="recv_address">
                                                 </div>
                                             </div> 
                                         </div>                                      

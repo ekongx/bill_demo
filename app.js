@@ -1,6 +1,9 @@
 'use strict'
 
-var billApp = angular.module('billApp', ['ngRoute'], function() {});
+
+var billApp = angular.module('billApp', ['ngRoute']).run(function($rootScope) {
+    $rootScope.today = new Date();
+});
 
 
 //设置路由器
@@ -8,15 +11,17 @@ billApp.config(function($routeProvider) {
 
     $routeProvider
         .when('/', {
-            templateUrl: 'modules/index/index.html',
-            // controller: 'indexCtrl'       
+            templateUrl: 'modules/add/add.html',
+            controller: 'addCtrl'       
         }).when('/goods', {
             templateUrl: 'modules/goods/index.html',
             // controller: 'indexCtrl'       
-        }).when('/error', {
-            templateUrl: 'partials/error.html'
-        })
-        .otherwise({
+        }).otherwise({
             redirectTo: '/'
         });
 });
+
+//url获取
+billApp.config(['$locationProvider', function ($locationProvider) {
+    $locationProvider.html5Mode(true);
+}]);
