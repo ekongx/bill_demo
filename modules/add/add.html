@@ -1,4 +1,4 @@
-<!-- layout -->
+
         <div class="layout" ng-init="init()">
 
             <!-- sidebar -->
@@ -38,7 +38,7 @@
                         </div>
                     </div>
 
-                    <form id="billsDetail" method="post" class="form-horizontal" action="/index.php/Webadmin/billApi/bill_api_add">
+                    <form id="billsDetail" name="billsDetail" method="post" class="form-horizontal"  novalidate>
                     <input type="hidden" name="admin_name" value="海莱客服{$clientInfo.kfcode}" readonly="readonly">
                     <input type="hidden" name="billsource" value="51" readonly="readonly"> <!-- 订单来源 -->
                     <input type="hidden" name="client_id" value="2" readonly="readonly"> <!-- 操作用户ID -->
@@ -52,12 +52,14 @@
                                 </label>
                                 </header>
                                 <div class="panel-body user-info">
+                                <div goods></div>
                                     <div class="row">                                        
                                         <div class="col-sm-3">
                                             <div class="form-group">
                                                 <label class="col-sm-4 control-label">姓名</label>
                                                 <div class="col-sm-8">
-                                                    <input type="text" class="form-control" value="{{ clientInfo.recv_name }}" name="recv_name">
+                                                    <input type="text" class="form-control" name="recv_name" ng-model="clientInfo.recv_name" required>
+                                                      <span ng-show="billsDetail.recv_name.$error.required">用户名是必须的</span>        
                                                 </div>
                                             </div>
                                         </div>
@@ -81,17 +83,17 @@
                                             <div class="form-group">                                            
                                                 <label class="col-sm-1 control-label">收货地址</label>
                                                 <div class="col-sm-1">
-                                                    <select class="area_select form-control" ng-model="areaReload.province" ng-options="m.name for m in provinceModel"> 
+                                                    <select class="area_select form-control" ng-model="areaReload.province" ng-options="m.name for m in provinceModel" ng-change="citySelect()"> 
                                                     <option value="">请选择</option>
                                                     </select>       
                                                 </div>
                                                 <div class="col-sm-1">
-                                                    <select class="area_select form-control">
+                                                    <select class="area_select form-control" ng-model="areaReload.city" ng-options="m.name for m in cityModel"  ng-change="districtSelect()">
                                                     <option value="">请选择</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-sm-1">
-                                                    <select class="area_select form-control">
+                                                    <select class="area_select form-control" ng-model="areaReload.district" ng-options="m.name for m in districtModel">
                                                     <option value="">请选择</option>
                                                     </select>
                                                 </div>
@@ -111,7 +113,7 @@
                         <div class="col-lg-12">
                             <section class="panel">
                                 <header class="panel-heading">商品信息
-                                    <label class="btn btn-white btn-sm fr" onclick="billApi.add();">
+                                    <label class="btn btn-white btn-sm fr" ng-click="addGoods()">
                                         <i class="fa fa-plus mg-r-xs"></i>新增
                                     </label>
                                 </header>
@@ -126,7 +128,7 @@
                         <div class="col-lg-12">
                             <section class="panel">
                                 <header class="panel-heading">订单信息
-                                    <button type="button" class="btn btn-danger fr btn-sm" onclick="billApi.billFeetotal()"><i class="fa fa-edit"></i> 点击计算商品总价</button>
+                                    <button type="button" class="btn btn-danger fr btn-sm" ng-click="billFeetotal()"><i class="fa fa-edit"></i> 点击计算商品总价</button>
                                 </header>
                                 <div class="panel-body">
                                     <div class="row">
@@ -150,7 +152,7 @@
                                             <div class="form-group">
                                                  <label class="col-sm-4 control-label">实付金额</label>
                                                  <div class="col-sm-8">
-                                                      <input type="text" class="form-control" name="feepayment" id="feepayment"> 
+                                                      <input type="text" class="form-control" name="feepayment" id="feepayment" ng-change="billPromotion()" ng-model="billPromotion.feepayment"> 
                                                  </div>             
                                             </div> 
                                         </div>    
@@ -193,4 +195,3 @@
             <!-- main-content -->
 
         </div>
-        <!-- layout end -->
